@@ -1,8 +1,22 @@
 import customtkinter as c
 from tkinter import *
-import sqlite3
+import psycopg2
 
-# create connection
+# setting up database connection
+conn = psycopg2.connect(host="localhost", dbname="idp", user="postgres", password="raptor3796", port=5432)
+cursor = conn.cursor()
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS login_details (
+        id INT PRIMARY KEY,
+        username VARCHAR(255),
+        password VARCHAR
+    );
+""")
+
+conn.commit()
+cursor.close()
+conn.close()
+
 
 c.set_appearance_mode("system")
 c.set_default_color_theme("blue")
