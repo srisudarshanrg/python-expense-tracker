@@ -29,6 +29,8 @@ def SignUp():
         password_entered_confirm.delete(1.0, END)
         return
     
+    hashed_password = generate_password_hash(password, "scrypt", 10)
+    
     # get latest id
     get_latest_id_query = "SELECT COUNT(*) FROM login_details"
     cursor.execute(get_latest_id_query)
@@ -37,10 +39,11 @@ def SignUp():
     latest_id = row_count + 1
 
     add_user_query = "INSERT INTO login_details(id, username, password) values(%s, %s, %s)"
-    cursor.execute(add_user_query, (latest_id, username, password))
+    cursor.execute(add_user_query, (latest_id, username, hashed_password))
     conn.commit()
     mb.showinfo("User Added", f"You have been signed into Raptor Expenses as {username}")
     root.destroy()
+    import login
 
 def open_login():
     root.destroy()

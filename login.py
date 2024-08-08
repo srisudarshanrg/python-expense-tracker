@@ -9,16 +9,18 @@ def Authenticate():
     username_entered = str(username_entered_entry.get())
     password_entered = str(password_entered_entry.get())
 
-    get_username_query = str("SELECT * FROM login_details WHERE username=%s and password=%s")
-    cursor.execute(get_username_query, (username_entered,password_entered))
+    get_username_query = str("SELECT * FROM login_details WHERE username=%s")
+    cursor.execute(get_username_query, (username_entered,))
+    details = cursor.fetchone()
+    correct_password = details[2]
 
-    number_affected = cursor.rowcount
-    if number_affected == 0:
+    check = check_password_hash(correct_password, password_entered)
+
+    if not check:
         mb.showerror("Incorrect Credentials", "The username or password you have entered is incorrect")
     else:
         import expense_tracker
-
-    print(number_affected)
+        print("logged in")
 
 def open_sign_up():
     root.destroy()
