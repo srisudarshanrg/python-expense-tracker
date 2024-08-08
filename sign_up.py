@@ -23,6 +23,13 @@ def SignUp():
     password = str(password_entered_entry.get())
     confirm_password = str(password_entered_confirm.get())
 
+    check_username_exists_query = "SELECT * FROM login_details where username=%s"
+    cursor.execute(check_username_exists_query, (username,))
+    
+    existing_rows = cursor.fetchall()
+    if len(existing_rows) > 0 :
+        mb.showerror("Existing Username", "This username already exists. Choose another one")
+
     if password != confirm_password:
         mb.showerror("Confirm Password", "Your password and confirmed password don't match")
         password_entered_entry.delete(1.0, END)
