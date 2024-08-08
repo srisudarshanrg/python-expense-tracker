@@ -2,7 +2,7 @@ import customtkinter as c
 from tkinter import *
 import psycopg2 as pg
 from tkinter import messagebox as mb
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 
 # authentication functions
 def Authenticate():
