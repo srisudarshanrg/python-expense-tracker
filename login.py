@@ -6,16 +6,20 @@ from werkzeug.security import check_password_hash
 
 # authentication functions
 def Authenticate():
+    # get credentials
     username_entered = str(username_entered_entry.get())
     password_entered = str(password_entered_entry.get())
 
+    # get row where username exists
     get_username_query = str("SELECT * FROM login_details WHERE username=%s")
     cursor.execute(get_username_query, (username_entered,))
     details = cursor.fetchone()
     correct_password = details[2]
 
+    # compare password and its hash
     check = check_password_hash(correct_password, password_entered)
 
+    # authenticate
     if not check:
         mb.showerror("Incorrect Credentials", "The username or password you have entered is incorrect")
     else:

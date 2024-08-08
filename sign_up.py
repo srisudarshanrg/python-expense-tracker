@@ -19,10 +19,12 @@ conn.commit()
 
 # authentication functions
 def SignUp():
+    # get entered credentials
     username = str(username_entered_entry.get())
     password = str(password_entered_entry.get())
     confirm_password = str(password_entered_confirm.get())
 
+    # check if username already exists
     check_username_exists_query = "SELECT * FROM login_details where username=%s"
     cursor.execute(check_username_exists_query, (username,))
     
@@ -36,6 +38,7 @@ def SignUp():
         password_entered_confirm.delete(1.0, END)
         return
     
+    # hashing password for security
     hashed_password = generate_password_hash(password, "scrypt", 10)
     
     # get latest id
@@ -45,6 +48,7 @@ def SignUp():
     row_count = cursor.fetchone()[0]
     latest_id = row_count + 1
 
+    # adding user to database
     add_user_query = "INSERT INTO login_details(id, username, password) values(%s, %s, %s)"
     cursor.execute(add_user_query, (latest_id, username, hashed_password))
     conn.commit()
